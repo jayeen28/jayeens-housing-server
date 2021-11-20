@@ -4,7 +4,7 @@ const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
-const admin = require("firebase-admin");
+//const admin = require("firebase-admin");
 const port = process.env.PORT || 5000;
 
 //MIDDLEWARE
@@ -12,10 +12,10 @@ app.use(cors());
 app.use(express.json())
 
 //FIREBASE INITIALIZATION
-const serviceAccount = require('./jayeens-housing-firebase-adminsdk-nx8xp-553d4462f0.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
+//const serviceAccount = require('./jayeens-housing-firebase-adminsdk-nx8xp-553d4462f0.json');
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount)
+// });
 
 //MONGO CONNECT
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.urbpc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
