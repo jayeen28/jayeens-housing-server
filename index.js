@@ -52,14 +52,14 @@ const run = async () => {
             const cursor = apartmentsCollection.find({});
             const result = await cursor.toArray();
             res.send(result);
-        })
+        });
 
         //ADD A NEW APARTMENT
         app.post('/apartments/add', async (req, res) => {
             const apartmentData = req.body;
             const result = await apartmentsCollection.insertOne(apartmentData);
             res.json(result);
-        })
+        });
 
         //DELETE APARTMENT
         app.delete('/apartments/delete', async (req, res) => {
@@ -67,7 +67,7 @@ const run = async () => {
             const query = { _id: ObjectId(id) }
             const result = await apartmentsCollection.deleteOne(query);
             res.json(result);
-        })
+        });
 
         //GET SINGLE APARTMENT
         app.get('/apartment/:id', async (req, res) => {
@@ -76,7 +76,7 @@ const run = async () => {
             const cursor = apartmentsCollection.findOne(query);
             const result = await cursor;
             res.json(result);
-        })
+        });
 
         //CUSTOMERS INFO MANAGEMENT
         app.put('/users', async (req, res) => {
@@ -88,7 +88,7 @@ const run = async () => {
             };
             const result = await usersCollection.updateOne(query, updateDoc, options);
             res.json(result);
-        })
+        });
 
         //GET CUSTOMER DATA
         app.get('/users', async (req, res) => {
@@ -96,7 +96,8 @@ const run = async () => {
             const query = { uid: uid };
             const result = await usersCollection.findOne(query);
             res.json(result)
-        })
+        });
+
         //AUTHENTICATE USER ROLE
         app.get('/users/authenticate', verifyToken, async (req, res) => {
             const decodedUserUid = req.decodeUserUid
@@ -109,19 +110,27 @@ const run = async () => {
             else {
                 res.status(401).json({ Message: 'Unauthorized user' })
             }
-        })
+        });
 
         //SEND APARTMENT BOOKINGS TO DATABSE
         app.post('/apartment/book', async (req, res) => {
             const apartmentInfo = req.body;
             const result = await bookedApartmentCollection.insertOne(apartmentInfo);
             res.json(result);
-        })
+        });
 
         //GET ALL BOOKED APARTMENTS
         app.get('/bookedapartments', async (req, res) => {
             const cursor = bookedApartmentCollection.find({})
             const result = await cursor.toArray();
+            res.json(result);
+        });
+
+        //GET SINGLE BOOKED APARTMENT DATA
+        app.get('/apartments/booked/:id', async (req, res) => {
+            const { id } = req.params;
+            const query = { _id: ObjectId(id) };
+            const result = await bookedApartmentCollection.findOne(query);
             res.json(result);
         })
 
@@ -132,7 +141,7 @@ const run = async () => {
             const cursor = bookedApartmentCollection.find(query);
             const result = await cursor.toArray();
             res.json(result)
-        })
+        });
 
         //UPDATE BOOKING STATUS
         app.put('/bookedapartments', async (req, res) => {
@@ -143,7 +152,7 @@ const run = async () => {
             }
             const result = await bookedApartmentCollection.updateOne(query, updateDoc);
             res.json(result);
-        })
+        });
 
         //DELETE ANY BOOKING 
         app.delete('/bookedapartments/delete', async (req, res) => {
@@ -151,7 +160,8 @@ const run = async () => {
             const query = { _id: ObjectId(id) }
             const result = await bookedApartmentCollection.deleteOne(query);
             res.json(result);
-        })
+        });
+
         //MAKE ADMIN 
         app.put('/users/makeadmin', async (req, res) => {
             const email = req.query.email;
@@ -170,14 +180,14 @@ const run = async () => {
             const reviewContents = req.body;
             const result = await reviewsCollection.insertOne(reviewContents);
             res.json(result);
-        })
+        });
 
         //GET ALL REVIEWS
         app.get('/reviews', async (req, res) => {
             const cursor = reviewsCollection.find({});
             const result = await cursor.toArray();
             res.json(result);
-        })
+        });
     }
 
     finally {
