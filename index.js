@@ -146,10 +146,11 @@ const run = async () => {
 
         //UPDATE BOOKING STATUS
         app.put('/bookedapartments', async (req, res) => {
-            const bookingId = req.query.id;
-            const query = { _id: ObjectId(bookingId) }
+            const { id } = req.query;
+            const { status } = req.body;
+            const query = { _id: ObjectId(id) };
             const updateDoc = {
-                $set: { bookstatus: 'approved' }
+                $set: { bookstatus: status }
             }
             const result = await bookedApartmentCollection.updateOne(query, updateDoc);
             res.json(result);
