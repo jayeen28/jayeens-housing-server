@@ -101,9 +101,10 @@ const run = async () => {
 
         //AUTHENTICATE USER ROLE
         app.get('/users/authenticate', verifyToken, async (req, res) => {
-            const decodedUserUid = req.decodeUserUid
             const requesterUid = req.query.uid;
-            if (decodedUserUid === requesterUid) {
+            const { decodeUserUid } = req;
+            console.log(decodeUserUid, requesterUid)
+            if (decodeUserUid === requesterUid) {
                 const query = { uid: requesterUid };
                 const result = await usersCollection.findOne(query);
                 res.json(result);
