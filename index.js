@@ -103,7 +103,6 @@ const run = async () => {
         app.get('/users/authenticate', verifyToken, async (req, res) => {
             const requesterUid = req.query.uid;
             const { decodeUserUid } = req;
-            console.log(decodeUserUid, requesterUid)
             if (decodeUserUid === requesterUid) {
                 const query = { uid: requesterUid };
                 const result = await usersCollection.findOne(query);
@@ -121,9 +120,15 @@ const run = async () => {
             res.json(result);
         });
 
-        //GET ALL BOOKED APARTMENTS
-        app.get('/bookedapartments', async (req, res) => {
-            const cursor = bookedApartmentCollection.find({})
+        //GET PAID BOOKED APARTMENTS
+        app.get('/bookedapartments/paid', async (req, res) => {
+            const cursor = bookedApartmentCollection.find({ bookstatus: 'Processing' })
+            const result = await cursor.toArray();
+            res.json(result);
+        });
+        //GET UNPAID BOOKED APARTMENTS
+        app.get('/bookedapartments/unpaid', async (req, res) => {
+            const cursor = bookedApartmentCollection.find({ bookstatus: 'Unpaid' })
             const result = await cursor.toArray();
             res.json(result);
         });
