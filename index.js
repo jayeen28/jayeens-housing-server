@@ -64,7 +64,7 @@ const run = async () => {
 
         //DELETE APARTMENT
         app.delete('/apartments/delete', async (req, res) => {
-            const id = req.query.id;
+            const { id } = req.query;
             const query = { _id: ObjectId(id) }
             const result = await apartmentsCollection.deleteOne(query);
             res.json(result);
@@ -81,8 +81,8 @@ const run = async () => {
 
         //CUSTOMERS INFO MANAGEMENT
         app.put('/users', async (req, res) => {
-            const customerInfo = req.body;
-            const query = { uid: customerInfo.uid };
+            const customerInfo = req.body.uid;
+            const query = { uid: customerInfo };
             const options = { upsert: true };
             const updateDoc = {
                 $set: customerInfo
@@ -93,7 +93,7 @@ const run = async () => {
 
         //GET CUSTOMER DATA
         app.get('/users', async (req, res) => {
-            const uid = req.query.uid;
+            const { uid } = req.query;
             const query = { uid: uid };
             const result = await usersCollection.findOne(query);
             res.json(result)
@@ -105,8 +105,8 @@ const run = async () => {
             const { decodeUserUid } = req;
             if (decodeUserUid === requesterUid) {
                 const query = { uid: requesterUid };
-                const result = await usersCollection.findOne(query);
-                res.json(result);
+                const { role } = await usersCollection.findOne(query);
+                role === 'admin' && res.json({ role: 'admin' });
             }
             else {
                 res.status(401).json({ Message: 'Unauthorized user' })
@@ -143,7 +143,7 @@ const run = async () => {
 
         //FIND BOOKED APARTMENT PER CUSTOMER
         app.get('/apartments/find', async (req, res) => {
-            const uid = req.query.uid;
+            const { uid } = req.query;
             const query = { 'bookingInfo.bookedBy': uid };
             const cursor = bookedApartmentCollection.find(query);
             const result = await cursor.toArray();
@@ -164,7 +164,7 @@ const run = async () => {
 
         //DELETE ANY BOOKING 
         app.delete('/bookedapartments/delete', async (req, res) => {
-            const id = req.query.id;
+            const { id } = req.query;
             const query = { _id: ObjectId(id) }
             const result = await bookedApartmentCollection.deleteOne(query);
             res.json(result);
@@ -172,7 +172,7 @@ const run = async () => {
 
         //MAKE ADMIN 
         app.put('/users/makeadmin', async (req, res) => {
-            const email = req.query.email;
+            const { email } = req.query;
             const query = { email: email };
             const updateDoc = {
                 $set: {
