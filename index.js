@@ -13,29 +13,29 @@ app.use(cors());
 app.use(express.json())
 
 //FIREBASE INITIALIZATION
-const serviceAccount = require('./jayeens-housing-firebase-adminsdk-nx8xp-553d4462f0.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
+// const serviceAccount = require('./jayeens-housing-firebase-adminsdk-nx8xp-553d4462f0.json');
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount)
+// });
 
 //MONGO CONNECT
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.urbpc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //VERIFY TOKEN
-const verifyToken = async (req, res, next) => {
-    if (req.headers?.authorization?.startsWith('Bearer ')) {
-        const idToken = req.headers.authorization.split(' ')[1];
-        try {
-            const decodedUser = await admin.auth().verifyIdToken(idToken);
-            req.decodeUserUid = decodedUser.uid;
-        }
-        catch {
+// const verifyToken = async (req, res, next) => {
+//     if (req.headers?.authorization?.startsWith('Bearer ')) {
+//         const idToken = req.headers.authorization.split(' ')[1];
+//         try {
+//             const decodedUser = await admin.auth().verifyIdToken(idToken);
+//             req.decodeUserUid = decodedUser.uid;
+//         }
+//         catch {
 
-        }
-    }
-    next();
-}
+//         }
+//     }
+//     next();
+// }
 //DATA PROCESSING
 const run = async () => {
     try {
@@ -100,18 +100,18 @@ const run = async () => {
         });
 
         //AUTHENTICATE USER ROLE
-        app.get('/users/authenticate', verifyToken, async (req, res) => {
-            const requesterUid = req.query.uid;
-            const { decodeUserUid } = req;
-            if (decodeUserUid === requesterUid) {
-                const query = { uid: requesterUid };
-                const { role } = await usersCollection.findOne(query);
-                role === 'admin' && res.json({ role: 'admin' });
-            }
-            else {
-                res.status(401).json({ Message: 'Unauthorized user' })
-            }
-        });
+        // app.get('/users/authenticate', verifyToken, async (req, res) => {
+        //     const requesterUid = req.query.uid;
+        //     const { decodeUserUid } = req;
+        //     if (decodeUserUid === requesterUid) {
+        //         const query = { uid: requesterUid };
+        //         const { role } = await usersCollection.findOne(query);
+        //         role === 'admin' && res.json({ role: 'admin' });
+        //     }
+        //     else {
+        //         res.status(401).json({ Message: 'Unauthorized user' })
+        //     }
+        // });
 
         //SEND APARTMENT BOOKINGS TO DATABSE
         app.post('/apartment/book', async (req, res) => {
