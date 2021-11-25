@@ -81,8 +81,9 @@ const run = async () => {
 
         //CUSTOMERS INFO MANAGEMENT
         app.put('/users', async (req, res) => {
-            const customerInfo = req.body.uid;
-            const query = { uid: customerInfo };
+            const customerInfo = req.body;
+            const { uid } = customerInfo;
+            const query = { uid: uid };
             const options = { upsert: true };
             const updateDoc = {
                 $set: customerInfo
