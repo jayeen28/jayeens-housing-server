@@ -122,15 +122,11 @@ const run = async () => {
             res.json(result);
         });
 
-        //GET PAID BOOKED APARTMENTS
-        app.get('/bookedapartments/paid', async (req, res) => {
-            const cursor = bookedApartmentCollection.find({ bookstatus: 'Processing' })
-            const result = await cursor.toArray();
-            res.json(result);
-        });
         //GET UNPAID BOOKED APARTMENTS
-        app.get('/bookedapartments/unpaid', async (req, res) => {
-            const cursor = bookedApartmentCollection.find({ bookstatus: 'Unpaid' })
+        app.get('/bookedapartments/:paymentStat', async (req, res) => {
+            const { paymentStat } = req.params;
+            const query = { bookstatus: paymentStat }
+            const cursor = bookedApartmentCollection.find(query)
             const result = await cursor.toArray();
             res.json(result);
         });
