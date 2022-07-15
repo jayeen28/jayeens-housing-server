@@ -23,6 +23,12 @@ const userSchema = new Schema({
         minlength: 7,
         validate(value) { if (value.toLowerCase().includes('password')) throw new Error('Password can not contain the word "Password"') }
     },
+    avatar: {
+        type: String,
+        trim: true,
+        required: false,
+        validate(value) { if (!value.match(/(http(s ?): )([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g)) throw new Error('Invalid url.') }
+    },
     phone: {
         type: String,
         required: false

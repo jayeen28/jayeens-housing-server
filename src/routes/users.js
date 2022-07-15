@@ -63,7 +63,7 @@ router.post('/users/signout/all', auth, async (req, res) => {
 router.patch('/users/me', auth, async (req, res) => {
     try {
         const updates = Object.keys(req.body)
-        const allowedUpdates = ['name', 'password', 'email', 'phone', 'address', 'familyMember']
+        const allowedUpdates = ['name', 'password', 'email', 'phone', 'address', 'familyMember', 'avatar']
         const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
         if (!isValidOperation) return res.status(400).send({ error: 'Invalid updates!' })
         updates.forEach((update) => req.user[update] = req.body[update])
