@@ -22,6 +22,18 @@ const apartmentSchema = new Schema({
     isAvailable: {
         type: Boolean,
         required: true
+    },
+    sqft: {
+        type: Number,
+        required: true
+    },
+    beds: {
+        type: Number,
+        required: true
+    },
+    baths: {
+        type: Number,
+        required: true
     }
 });
 
