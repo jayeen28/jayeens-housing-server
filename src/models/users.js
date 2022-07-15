@@ -41,7 +41,7 @@ const userSchema = new Schema({
     role: {
         type: String,
         required: true,
-        validate(value) { if (!['user', 'admin', 'owner'].includes(value)) throw new Error('Invalid role') }
+        validate(value) { if (!['admin', 'owner', 'buyer', 'seller'].includes(value)) throw new Error('Invalid role') }
     },
     tokens: [{
         token: {
