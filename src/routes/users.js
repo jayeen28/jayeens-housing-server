@@ -10,7 +10,7 @@ router.post('/users', async (req, res) => {
         const allowedInfo = ['name', 'email', 'password'];
         const isValid = Object.keys(req.body).every(key => allowedInfo.includes(key) && req.body[key].length > 0);
         if (!isValid) return res.status(400).send('Bad request');
-        req.body.role = 'user';
+        req.body.role = 'buyer';
         req.body.active = true;
         const user = new User(req.body);
         await user.save();
